@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời tiết Đà Nẵng</title>
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 50px;">
+    <h1>🌤 Thời tiết Đà Nẵng</h1>
+    <div id="weather">Đang tải dữ liệu...</div>
+
+    <script>
+        async function getWeather() {
+            let response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=16.0678&longitude=108.2208&hourly=temperature_2m,weathercode&timezone=auto");
+            let data = await response.json();
+            let temp = data.hourly.temperature_2m[0];
+            let code = data.hourly.weathercode[0];
+            
+            let emoji = "☀️";
+            if (code >= 45 && code <= 48) emoji = "🌫";
+            else if (code >= 51 && code <= 67) emoji = "🌦";
+            else if (code >= 71 && code <= 77) emoji = "❄️";
+            else if (code >= 80 && code <= 82) emoji = "🌧";
+            else if (code >= 95) emoji = "⛈";
+
+            document.getElementById("weather").innerHTML = `${emoji} ${temp}°C`;
+        }
+        getWeather();
+    </script>
+</body>
+</html>
